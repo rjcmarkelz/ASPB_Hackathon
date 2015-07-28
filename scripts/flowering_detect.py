@@ -109,9 +109,6 @@ cv2.imshow("blur2", blur2)
 
 # Plot the histogram
 # 
-
-
-
 # threshold image based on a_channel region that provides the most contrast
 # (aT, a_thresh_image) = cv2.threshold(blur, 113, 100, cv2.THRESH_BINARY)
 # cv2.imshow("a_channel Threshold Binary", a_thresh_image)
@@ -140,12 +137,12 @@ cv2.imshow("b_channel Threshold Binary", b_thresh_image)
 # canny_image2 = cv2.Canny(b_thresh_image, 100, 199, apertureSize = 3)
 # cv2.imshow("Canny 2", canny_image2)
 
-# plants = input_image.copy()
+plants = input_image.copy()
 # (cnts, _) = cv2.findContours(a_thresh_image.copy(), cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
 (cnts2, _) = cv2.findContours(b_thresh_image.copy(), cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
 
 # print "I count %d plants" % (len(cnts))
-print "I count %d flowers" % (len(cnts2))
+
 
 # cnts = sorted(cnts, key = cv2.contourArea, reverse = True)[:20]
 cnts2 = sorted(cnts2, key = cv2.contourArea, reverse = True)[:20]
@@ -191,7 +188,7 @@ cv2.putText(plants, flowers, left2, font, size, black, thickness)
 
 
 # cv2.imshow("input_image", plants)
-# # output_image = "%s_4.tif" % symbol.data
+output_image = "%s_4.tif" % symbol.data
 
 # cv2.imwrite("ouput_flower_testX.png", plants)
 # # keep images open to view the results

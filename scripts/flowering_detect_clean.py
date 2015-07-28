@@ -20,9 +20,6 @@ args = vars(ap.parse_args())
 print args
 # Load the image and display it
 input_image = cv2.imread(args["image"])
-# output_image_name = args["name"]
-# print output_image_name
-
 
 # Convert original image to the L*a*b* color space for flower detection
 cv2.imshow("original", input_image)
@@ -38,7 +35,7 @@ hist = cv2.calcHist([b_channel], [0], None, [256], [0, 256])
 blur2 = cv2.bilateralFilter(b_channel, 5, 50, 100)
 cv2.imshow("blur2", blur2)
 
-(bT, b_thresh_image) = cv2.threshold(blur2, 200, 256, cv2.THRESH_BINARY)
+(bT, b_thresh_image) = cv2.threshold(blur2, 195, 256, cv2.THRESH_BINARY)
 cv2.imshow("b_channel Threshold Binary", b_thresh_image)
 
 # canny edge detection on the thresholded image
@@ -50,9 +47,9 @@ plants = input_image.copy()
 
 print "I count %d flowers" % (len(cnts2))
 
-
 cnts2 = sorted(cnts2, key = cv2.contourArea, reverse = True)[:20]
 
+#this part is hacky and could be cleaned up
 cv2.drawContours(plants, cnts2, 0, (255, 255, 0), 4)
 cv2.drawContours(plants, cnts2, 1, (255, 255, 0), 4)
 cv2.drawContours(plants, cnts2, 2, (255, 255, 0), 4)
@@ -64,29 +61,19 @@ cv2.drawContours(plants, cnts2, 7, (255, 255, 0), 4)
 cv2.drawContours(plants, cnts2, 8, (255, 255, 0), 4)
 cv2.drawContours(plants, cnts2, 9, (255, 255, 0), 4)
 cv2.drawContours(plants, cnts2, 10, (255, 255, 0), 4)
-cv2.drawContours(plants, cnts2, 11, (255, 255, 0), 4)
-cv2.drawContours(plants, cnts2, 12, (255, 255, 0), 4)
-cv2.drawContours(plants, cnts2, 13, (255, 255, 0), 4)
-cv2.drawContours(plants, cnts2, 14, (255, 255, 0), 4)
-cv2.drawContours(plants, cnts2, 15, (255, 255, 0), 4)
-cv2.drawContours(plants, cnts2, 16, (255, 255, 0), 4)
 
-
-cv2.imshow("plants", plants)
-# Add QR CODE Print
-font = cv2.FONT_HERSHEY_SIMPLEX
-thickness = 3
-black = (0,)*3
-size = 1
-left = (10,50)
-left2 = (20, 100)
 
 if len(cnts2) > 2:
     flowers = 'Flowering'
 else:
     flowers = 'Not Flowering' 
-cv2.putText(plants, flowers, left2, font, size, black, thickness) 
+print flowers
 
+font = cv2.FONT_HERSHEY_SIMPLEX
+cv2.putText(plants, flowers,(10,150), font, 5,(0,0,255),5)
+cv2.imshow("plants", plants)
+
+cv2.imwrite('flowering.png', plants)
 
 cv2.waitKey(0)
 
